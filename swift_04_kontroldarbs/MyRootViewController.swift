@@ -13,7 +13,8 @@ class MyRootViewController: UITableViewController {
     //MARK: - 4) Lietojumprogrammas UI kontrolieri izveidot datu modeli:
     var teams = [Team]()
     var stages = [Stage]()
-    
+    var trips = [Trip]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Load/create data
@@ -132,31 +133,40 @@ class MyRootViewController: UITableViewController {
                                           longitude: 57.187437,
                                           latitude: 26.60305)
                 ]
-                
-                
-                
-                
+                // Apnika drukāt datus
+                for _ in 1...12 {
+                    
+                    let randomTeam = Int.random(in: 0..<6)
+                    let randomStage = Int.random(in: 0..<6)
+                    let timeInterval = TimeInterval(Int.random(in: 600..<1200))
+                    let randomResult = Float.random(in: 80..<200)
+                    trips.append(Trip(team: teams[randomTeam],
+                                      stage: stages[randomStage],
+                                      startTime: Date() - timeInterval,
+                                      result: randomResult))
+                }
                 
             }
     
     // Paskatāmies, kas sanācis
     
-    
     // Sekciju skaits
-        override func numberOfSections(in tableView: UITableView) -> Int {
-             return 2
-        }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
     // Šūnu skaits katrā sekcijā
-        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            switch section {
-            case 0:
-                return teams.count
-            case 1:
-                return stages.count
-            default:
-                return 1
-            }
-         }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return teams.count
+        case 1:
+            return stages.count
+        case 2:
+            return trips.count
+        default:
+            return 1
+        }
+    }
     // Salādējam datus
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StandardcellIdentifier")
@@ -179,6 +189,17 @@ class MyRootViewController: UITableViewController {
             cell?.detailTextLabel?.text = "Trases sarežģītība ir \(made.stageDifficulty)"
             return cell!
             
+        case 2:
+            let made = trips[indexPath.row]
+            let teamAndStage = made.team.pilot.firstname + " un " + made.team.codriver.firstname + " veica posmu " + made.stage.name + " (" + String(made.stage.length) + " km)"
+            cell?.textLabel?.text = teamAndStage
+            // Tiekam galā ar "Date" formātu
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let startaLaiks = dateFormatterPrint.string(from: made.startTime)
+            cell?.detailTextLabel?.text = "Startēja \(startaLaiks) un veica trasi \(made.result) sekundēs"
+            return cell!
+
         default:
             return cell!
         }
@@ -193,7 +214,9 @@ class MyRootViewController: UITableViewController {
             return "Komandu saraksts"
         case 1:
             return "Posmu saraksts"
-        default:
+        case 2:
+            return "Improvizēti rezultāti"
+       default:
             return "Kaut kāds ERRORs"
         }
     }
