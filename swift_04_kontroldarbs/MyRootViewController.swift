@@ -12,6 +12,7 @@ import Foundation
 class MyRootViewController: UITableViewController {
     //MARK: - 4) Lietojumprogrammas UI kontrolieri izveidot datu modeli:
     var teams = [Team]()
+    var stages = [Stage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +96,42 @@ class MyRootViewController: UITableViewController {
                                             model: "C2 R2"))
                 ]
                 
-                
+                stages = [Stage(name: "SS1 Litene 1",
+                                length: 3.87,
+                                difficulty: .light,
+                                longitude: 57.238918,
+                                latitude: 26.905813),
+                          
+                          Stage(name: "SS2 Sendija 1",
+                                          length: 3.93,
+                                          difficulty: .medium,
+                                          longitude: 57.162755,
+                                          latitude: 26.917791),
+                          
+                          Stage(name: "SS3 Kamalda 1",
+                                length: 4.30,
+                                          difficulty: .easy,
+                                          longitude: 57.187437,
+                                          latitude: 26.60305),
+                          
+                          Stage(name: "SS4 Litene 2",
+                                length: 3.87,
+                                difficulty: .light,
+                                longitude: 57.238918,
+                                latitude: 26.905813),
+                          
+                          Stage(name: "SS5 Sendija 2",
+                                          length: 3.93,
+                                          difficulty: .medium,
+                                          longitude: 57.162755,
+                                          latitude: 26.917791),
+                          
+                          Stage(name: "SS6 Kamalda 2",
+                                length: 4.30,
+                                          difficulty: .easy,
+                                          longitude: 57.187437,
+                                          latitude: 26.60305)
+                ]
                 
                 
                 
@@ -108,46 +144,59 @@ class MyRootViewController: UITableViewController {
     
     // Sekciju skaits
         override func numberOfSections(in tableView: UITableView) -> Int {
-        //    return 1
- //           return self.carList.count        // 2 !
-            return 1
+             return 2
         }
-
-    
-    // Sunu skaits katra sekcija
+    // Šūnu skaits katrā sekcijā
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //    return 20
-        //    let made:CarMadeEntity = self.carList[section]
-            return teams.count
-      //      return made.carModelList.count
-    //        return self.carList[section].carModelList.count
-        }
-
+            switch section {
+            case 0:
+                return teams.count
+            case 1:
+                return stages.count
+            default:
+                return 1
+            }
+         }
+    // Salādējam datus
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StandardcellIdentifier")
-// Get data item
-        // Get section data = Made
-  //      let made: Team = self.teams[indexPath.section]
-// Get model in section
-        let made = teams[indexPath.row]
-
-// Made + Model
-        let pilotAndCoDriver = made.pilot.firstname + " " + made.pilot.secondname + " un " + made.codriver.firstname + " " + made.codriver.secondname
-        cell?.textLabel?.text = pilotAndCoDriver
-
- //       if let auto = made.car.brand {
-        cell?.detailTextLabel?.text = made.car.brand + " " + made.car.model
-/*        }
-        else {
-            cell?.detailTextLabel?.text = nil
-        } */
-// Image
-        cell?.imageView?.image = made.pilot.photo
-
-        return cell!
+        let section = indexPath.section
+        // Get model in section
+        switch section {
+        case 0:
+            let made = teams[indexPath.row]
+            // Made + Model
+            let pilotAndCoDriver = made.pilot.firstname + " " + made.pilot.secondname + " un " + made.codriver.firstname + " " + made.codriver.secondname
+            cell?.textLabel?.text = pilotAndCoDriver
+            cell?.detailTextLabel?.text = made.car.brand + " " + made.car.model
+            // Image
+            cell?.imageView?.image = made.pilot.photo
+            return cell!
+        case 1:
+            let made = stages[indexPath.row]
+            let nameAndLength = "Posma " + made.name + " garums ir " + String(made.length) + "km"
+            cell?.textLabel?.text = nameAndLength
+            cell?.detailTextLabel?.text = "Trases sarežģītība ir \(made.stageDifficulty)"
+            return cell!
+            
+        default:
+            return cell!
+        }
+        
     }
-
+    // Protocol method - for section title
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // Made object
+        switch section {
+        case 0:
+            return "Komandu saraksts"
+        case 1:
+            return "Posmu saraksts"
+        default:
+            return "Kaut kāds ERRORs"
+        }
+    }
     
 }
 
