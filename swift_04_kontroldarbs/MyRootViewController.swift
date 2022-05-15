@@ -5,9 +5,11 @@
 //  Created by Paulis Zabarovskis on 09/05/2022.
 //
 
+//MARK: - 1) Izveidot Xcode OS projektu – lietojumprogramma rallija auto sacensībām.
+// 2) Izveidot objektu klases rallija auto sacensību datu glabāšanai. - Team, Stage un Trip
+// 3) Katru datu klasi veidot atsevišķā swift failā. Katrai klasei izveidot piemērotu konstruktoru.
 import UIKit
 import Foundation
-
 
 class MyRootViewController: UITableViewController {
     //MARK: - 4) Lietojumprogrammas UI kontrolieri izveidot datu modeli:
@@ -17,19 +19,13 @@ class MyRootViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Load/create data
-                self.loadData()
-        
-        
         // Paskatīties, kas sanācis
-        
+                self.loadData()
         self.navigationItem.title = "Paskatīties, kas sanācis"
-        
             }
     
-    
             func loadData() {
-                // a) Izveidot masīvu ar 5-6 dalībniekiem, projekta assets resursos ielādēt dalībnieku foto (sameklēt internetā).
+// a) Izveidot masīvu ar 5-6 dalībniekiem, projekta assets resursos ielādēt dalībnieku foto (sameklēt internetā).
                 teams = [Team(pilot: Team.Pilot(firstname: "Ramona",
                                                  secondname: "Karlsson",
                                                  photoName: "01_P_Ramona_Karlsson.png"),
@@ -96,7 +92,7 @@ class MyRootViewController: UITableViewController {
                               car: Team.Car(brand: "Citroân",
                                             model: "C2 R2"))
                 ]
-                
+// b) Izveidot masīvu ar 3-4 ātrumposmiem
                 stages = [Stage(name: "SS1 Litene 1",
                                 length: 3.87,
                                 difficulty: .light,
@@ -133,9 +129,8 @@ class MyRootViewController: UITableViewController {
                                           longitude: 57.187437,
                                           latitude: 26.60305)
                 ]
-                // Apnika drukāt datus
+//c) izveidot braucienu masīvu ar 10-12 ierakstus ar dažādiem dalībniekiem un ātrumposmiem
                 for _ in 1...12 {
-                    
                     let randomTeam = Int.random(in: 0..<6)
                     let randomStage = Int.random(in: 0..<6)
                     let timeInterval = TimeInterval(Int.random(in: 600..<1200))
@@ -147,14 +142,12 @@ class MyRootViewController: UITableViewController {
                 }
                 
             }
-    
-    // Paskatāmies, kas sanācis
-    
-    // Sekciju skaits
+
+// Sekciju skaits
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
-    // Šūnu skaits katrā sekcijā
+// Šūnu skaits katrā sekcijā
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -167,7 +160,7 @@ class MyRootViewController: UITableViewController {
             return 1
         }
     }
-    // Salādējam datus
+// Salādējam datus
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StandardcellIdentifier")
         let section = indexPath.section
@@ -182,11 +175,13 @@ class MyRootViewController: UITableViewController {
             // Image
             cell?.imageView?.image = made.pilot.photo
             return cell!
+            
         case 1:
             let made = stages[indexPath.row]
             let nameAndLength = "Posma " + made.name + " garums ir " + String(made.length) + "km"
             cell?.textLabel?.text = nameAndLength
             cell?.detailTextLabel?.text = "Trases sarežģītība ir \(made.stageDifficulty)"
+            cell?.imageView?.image = nil
             return cell!
             
         case 2:
@@ -197,7 +192,8 @@ class MyRootViewController: UITableViewController {
             let dateFormatterPrint = DateFormatter()
             dateFormatterPrint.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let startaLaiks = dateFormatterPrint.string(from: made.startTime)
-            cell?.detailTextLabel?.text = "Startēja \(startaLaiks) un veica trasi \(made.result) sekundēs"
+            cell?.detailTextLabel?.text = "Startēja \(startaLaiks) un veica trasi \((made.result * 100.0).rounded()/100) sekundēs"
+            cell?.imageView?.image = nil
             return cell!
 
         default:
@@ -208,7 +204,6 @@ class MyRootViewController: UITableViewController {
     // Protocol method - for section title
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        // Made object
         switch section {
         case 0:
             return "Komandu saraksts"

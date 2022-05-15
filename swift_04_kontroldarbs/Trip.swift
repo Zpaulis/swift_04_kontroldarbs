@@ -6,11 +6,15 @@
 //
 
 import Foundation
-
+// c) Izveidot objektu klasi – braucieni.
 class Trip {
+    // i) dalībnieks
     var team: Team
+    //  ii) ātrumposms
     var stage: Stage
+    //  iii) starta laiks (Date)
     var startTime: Date
+    //  iv) brauciena ilgums, sekundes (Float)
     var result: Float
     
     init (team: Team, stage: Stage, startTime: Date, result: Float) {

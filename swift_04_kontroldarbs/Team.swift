@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 
-
+// a) Izveidot objektu klasi – dalībnieks.
 class Team {
+    //    i) pilota vārds, uzvārds, foto
     struct Pilot {
         var firstname: String
         var secondname: String
@@ -22,7 +23,7 @@ class Team {
         }
     }
     var pilot: Pilot
-    
+   // ii) stūrmaņa vārds, uzvārds, foto
     struct Codriver {
         var firstname: String
         var secondname: String
@@ -35,9 +36,12 @@ class Team {
         }
     }
     var codriver: Codriver
+    // iii) ekipāžas numurs (vesels skaitlis)
     var teamNumber: Int
+    //     iv) automašīnas kategorija (teksts)
     var carCategory: String
-        struct Car {
+    //    v) automašīnas marka un modelis (teksts)
+    struct Car {
             var brand: String
             var model: String
             
